@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products Management</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/product.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="/js/auth.js"></script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- Navigation -->
+      <nav>
+        <div class="nav-brand">
+          <span><i class="fa-solid fa-receipt"></i> POS System</span>
+        </div>
+        <a href="/"
+          ><span><i class="fa-solid fa-pen-to-square"></i></span>
+          <span>Create Invoice</span></a
+        >
+        <a href="/invoices"
+          ><span><i class="fa-solid fa-folder-open"></i></span>
+          <span>View Invoices</span></a
+        >
+        <a href="/products" class="active admin-only"
+          ><span><i class="fa-solid fa-boxes-stacked"></i></span>
+          <span>Manage Products</span></a
+        >
+        <a href="/report" class="admin-only"
+          ><span><i class="fa-solid fa-chart-line"></i></span>
+          <span>Report</span></a
+        >
+        <a href="/users.html" class="admin-only"
+          ><span><i class="fa-solid fa-users-gear"></i></span>
+          <span>Users</span></a
+        >
+
+        <div class="user-profile">
+          <div id="user-avatar" class="user-avatar">?</div>
+          <div class="profile-info">
+            <span id="user-full-name" class="profile-name">Loading...</span>
+            <span id="user-role" class="profile-role">...</span>
+          </div>
+        </div>
+        <a href="#" id="logout-btn" class="logout-link">
+          <span><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <main class="main-content">
+        <div class="container">
+          <header style="margin-bottom: 2rem">
+            <h1>Product Inventory</h1>
+            <p style="color: var(--text-muted)">
+              Add and manage your product listings and pricing strategies.
+            </p>
+          </header>
+
+          <div class="products-grid">
+            <!-- Add Product Card -->
+            <div class="card">
+              <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem">
+                Add New Product
+              </h2>
+              <div id="messageContainer"></div>
+
+              <form id="productForm">
+                <div class="form-group">
+                  <label>SKU (Product Code)</label>
+                  <input
+                    type="text"
+                    id="sku"
+                    placeholder="e.g., SKU001"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Product Name</label>
+                  <input
+                    type="text"
+                    id="productName"
+                    placeholder="e.g., Widget A"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea
+                    id="description"
+                    placeholder="Product details..."
+                    rows="2"
+                  ></textarea>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1rem;
+                  "
+                >
+                  <div class="form-group">
+                    <label>Bag Price ($)</label>
+                    <input
+                      type="number"
+                      id="bagPrice"
+                      placeholder="0.000"
+                      min="0"
+                      step="0.001"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Streamer Price ($)</label>
+                    <input
+                      type="number"
+                      id="streamerPrice"
+                      placeholder="0.000"
+                      min="0"
+                      step="0.001"
+                    />
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1.5fr;
+                    gap: 1rem;
+                  "
+                >
+                  <div class="form-group">
+                    <label>Middle Unit</label>
+                    <select id="middleUnit" required>
+                      <option value="" selected disabled>Type</option>
+                      <option value="BOX">BOX</option>
+                      <option value="LINER">LINER</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Box/Liner Price ($)</label>
+                    <input
+                      type="number"
+                      id="boxPrice"
+                      placeholder="0.000"
+                      min="0"
+                      step="0.001"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>CTN Price ($)</label>
+                  <input
+                    type="number"
+                    id="ctnPrice"
+                    placeholder="0.000"
+                    min="0"
+                    step="0.001"
+                    required
+                  />
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1rem">
+                  <button type="submit" class="btn btn-primary" style="flex: 2">
+                    Add Product
+                  </button>
+                  <button
+                    type="reset"
+                    class="btn btn-secondary"
+                    style="flex: 1"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Products List Section -->
+            <div>
+              <div id="productsList" class="products-list">
+                <div class="no-products">Loading products...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="modal">
+      <div
+        class="modal-content card"
+        style="border: none; box-shadow: var(--shadow-lg)"
+      >
+        <div class="modal-header">
+          <h2 style="font-size: 1.5rem">Edit Product</h2>
+          <button type="button" class="close-btn" onclick="closeEditModal()">
+            &times;
+          </button>
+        </div>
+
+        <form id="editForm">
+          <input type="hidden" id="editProductId" />
+
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="editProductName" required />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="editDescription" rows="2"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="form-group">
+              <label>Bag Price ($)</label>
+              <input
+                type="number"
+                id="editBagPrice"
+                min="0"
+                step="0.001"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Streamer Price ($)</label>
+              <input
+                type="number"
+                id="editStreamerPrice"
+                min="0"
+                step="0.001"
+              />
+            </div>
+            <div class="form-group">
+              <label id="editBoxLabel">Box/Liner Price ($)</label>
+              <input
+                type="number"
+                id="editBoxPrice"
+                min="0"
+                step="0.001"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>CTN Price ($)</label>
+              <input
+                type="number"
+                id="editCtnPrice"
+                min="0"
+                step="0.001"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%; margin-top: 1rem"
+          >
+            Update Product
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/products.js"></script>
+  </body>
+</html>

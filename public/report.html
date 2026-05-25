@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/report.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="/js/auth.js"></script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- Navigation -->
+      <nav>
+        <div class="nav-brand">
+          <span><i class="fa-solid fa-receipt"></i> POS System</span>
+        </div>
+        <a href="/"
+          ><span><i class="fa-solid fa-pen-to-square"></i></span>
+          <span>Create Invoice</span></a
+        >
+        <a href="/invoices"
+          ><span><i class="fa-solid fa-folder-open"></i></span>
+          <span>View Invoices</span></a
+        >
+        <a href="/products" class="admin-only"
+          ><span><i class="fa-solid fa-boxes-stacked"></i></span>
+          <span>Manage Products</span></a
+        >
+        <a href="/report" class="active admin-only"
+          ><span><i class="fa-solid fa-chart-line"></i></span>
+          <span>Report</span></a
+        >
+        <a href="/users.html" class="admin-only"
+          ><span><i class="fa-solid fa-users-gear"></i></span>
+          <span>Users</span></a
+        >
+
+        <div class="user-profile">
+          <div id="user-avatar" class="user-avatar">?</div>
+          <div class="profile-info">
+            <span id="user-full-name" class="profile-name">Loading...</span>
+            <span id="user-role" class="profile-role">...</span>
+          </div>
+        </div>
+        <a href="#" id="logout-btn" class="logout-link">
+          <span><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <main class="main-content">
+        <div class="container">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 2rem;
+            "
+          >
+            <div>
+              <h1>Analytics Dashboard</h1>
+              <p style="color: var(--text-muted)">
+                Real-time overview of your sales performance and inventory.
+              </p>
+            </div>
+            <button class="btn btn-success" onclick="exportAllData()">
+              <i class="fa-solid fa-file-export"></i> Export CSV Data
+            </button>
+          </header>
+
+          <!-- Messages -->
+          <div id="messageContainer"></div>
+
+          <!-- Summary Cards -->
+          <div class="stats-grid">
+            <div class="stat-card invoices">
+              <div class="stat-label">Total Invoices</div>
+              <div class="stat-value" id="totalInvoices">-</div>
+            </div>
+            <div class="stat-card revenue">
+              <div class="stat-label">Total Revenue</div>
+              <div class="stat-value" id="totalRevenue">$0.000</div>
+            </div>
+            <div class="stat-card items">
+              <div class="stat-label">Items Sold</div>
+              <div class="stat-value" id="totalItems">-</div>
+            </div>
+            <div class="stat-card products">
+              <div class="stat-label">Active Products</div>
+              <div class="stat-value" id="totalProducts">-</div>
+            </div>
+          </div>
+
+          <!-- Recent Invoices Section -->
+          <div class="card">
+            <h2
+              style="
+                font-size: 1.25rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 2px solid var(--primary);
+                padding-bottom: 0.5rem;
+                display: inline-block;
+              "
+            >
+              Recent Transactions
+            </h2>
+            <div id="recentInvoicesContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                <p>Analyzing recent invoices...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOC Items Section -->
+          <div class="card">
+            <h2
+              style="
+                font-size: 1.25rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 2px solid var(--warning);
+                padding-bottom: 0.5rem;
+                display: inline-block;
+              "
+            >
+              Free On Consignment (FOC)
+            </h2>
+            <div id="focItemsContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                <p>Tracking FOC distributions...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/js/report.js"></script>
+  </body>
+</html>

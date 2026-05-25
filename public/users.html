@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="/js/auth.js"></script>
+    <style>
+      .users-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .users-table th,
+      .users-table td {
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .users-table th {
+        background-color: #f8fafc;
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .role-badge {
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+      }
+      .role-admin {
+        background: #e0e7ff;
+        color: #4338ca;
+      }
+      .role-cashier {
+        background: #ecfdf5;
+        color: #059669;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.2s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal-content {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid var(--border);
+        animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .modal-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-main);
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .modal-actions .btn {
+        flex: 1;
+      }
+
+      .form-group label span {
+        font-weight: 400;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-left: 0.25rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.9375rem;
+        color: var(--text-main);
+        background-color: white;
+        transition: all 0.2s ease;
+      }
+
+      input[type="password"]:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <nav>
+        <div class="nav-brand">
+          <span><i class="fa-solid fa-receipt"></i> POS System</span>
+        </div>
+        <a href="/"
+          ><span><i class="fa-solid fa-pen-to-square"></i></span>
+          <span>Create Invoice</span></a
+        >
+        <a href="/invoices"
+          ><span><i class="fa-solid fa-folder-open"></i></span>
+          <span>View Invoices</span></a
+        >
+        <a href="/products" class="admin-only"
+          ><span><i class="fa-solid fa-boxes-stacked"></i></span>
+          <span>Manage Products</span></a
+        >
+        <a href="/report" class="admin-only"
+          ><span><i class="fa-solid fa-chart-line"></i></span>
+          <span>Report</span></a
+        >
+        <a href="/users.html" class="active admin-only"
+          ><span><i class="fa-solid fa-users-gear"></i></span>
+          <span>Users</span></a
+        >
+
+        <div class="user-profile">
+          <div id="user-avatar" class="user-avatar">?</div>
+          <div class="profile-info">
+            <span id="user-full-name" class="profile-name">Loading...</span>
+            <span id="user-role" class="profile-role">...</span>
+          </div>
+        </div>
+        <a href="#" id="logout-btn" class="logout-link">
+          <span><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <main class="main-content">
+        <div class="container">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 2rem;
+            "
+          >
+            <div>
+              <h1>User Management</h1>
+              <p style="color: var(--text-muted)">
+                Create and manage access for your staff.
+              </p>
+            </div>
+            <button class="btn btn-primary" onclick="showAddUserModal()">
+              <i class="fa-solid fa-user-plus"></i> Add New User
+            </button>
+          </header>
+
+          <div id="messageContainer"></div>
+
+          <div
+            class="card responsive-table"
+            style="padding: 0; overflow: hidden"
+          >
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Full Name</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersList">
+                <!-- Loaded by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- User Modal -->
+    <div id="userModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Add New User</h2>
+        <form id="userForm" style="margin-top: 1rem">
+          <input type="hidden" id="userId" />
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" required />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" required />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="role" required>
+              <option value="CASHIER">Cashier</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              >Password
+              <span id="pwdLabel">(Leave blank to keep current)</span></label
+            >
+            <input type="password" id="password" />
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary">Save User</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/users.js"></script>
+  </body>
+</html>

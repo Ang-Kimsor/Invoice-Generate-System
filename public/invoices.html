@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Invoices</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="/js/auth.js"></script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- Navigation -->
+      <nav>
+        <div class="nav-brand">
+          <span><i class="fa-solid fa-receipt"></i> POS System</span>
+        </div>
+        <a href="/"
+          ><span><i class="fa-solid fa-pen-to-square"></i></span>
+          <span>Create Invoice</span></a
+        >
+        <a href="/invoices" class="active"
+          ><span><i class="fa-solid fa-folder-open"></i></span>
+          <span>View Invoices</span></a
+        >
+        <a href="/products" class="admin-only"
+          ><span><i class="fa-solid fa-boxes-stacked"></i></span>
+          <span>Manage Products</span></a
+        >
+        <a href="/report" class="admin-only"
+          ><span><i class="fa-solid fa-chart-line"></i></span>
+          <span>Report</span></a
+        >
+        <a href="/users.html" class="admin-only"
+          ><span><i class="fa-solid fa-users-gear"></i></span>
+          <span>Users</span></a
+        >
+
+        <div class="user-profile">
+          <div id="user-avatar" class="user-avatar">?</div>
+          <div class="profile-info">
+            <span id="user-full-name" class="profile-name">Loading...</span>
+            <span id="user-role" class="profile-role">...</span>
+          </div>
+        </div>
+        <a href="#" id="logout-btn" class="logout-link">
+          <span><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span>Logout</span>
+        </a>
+      </nav>
+
+      <main class="main-content">
+        <div class="container">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 2rem;
+            "
+          >
+            <div>
+              <h1>Invoice History</h1>
+              <p style="color: var(--text-muted)">
+                Manage and track all previously issued receipts.
+              </p>
+            </div>
+            <a href="/" class="btn btn-primary" style="text-decoration: none"
+              ><i class="fa-solid fa-plus"></i> New Invoice</a
+            >
+          </header>
+
+          <!-- Messages -->
+          <div id="messageContainer"></div>
+
+          <!-- Loading Indicator -->
+          <div id="loadingContainer" style="display: none" class="loading">
+            <div class="spinner"></div>
+            <p>Fetching your invoices...</p>
+          </div>
+
+          <!-- Invoices List Container -->
+          <div class="card" style="padding: 0; overflow: hidden">
+            <div id="invoicesList" class="invoices-list">
+              <!-- Content loaded by JS -->
+            </div>
+          </div>
+
+          <!-- No invoices message -->
+          <div
+            id="emptyMessage"
+            style="
+              display: none;
+              text-align: center;
+              padding: 60px;
+              background: white;
+              border-radius: 12px;
+              border: 1px dashed var(--border);
+            "
+          >
+            <p
+              style="
+                margin-bottom: 20px;
+                font-size: 1.125rem;
+                color: var(--text-muted);
+              "
+            >
+              No invoices found in the system yet.
+            </p>
+            <a href="/" class="btn btn-primary" style="text-decoration: none"
+              >Create Your First Invoice</a
+            >
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/invoices.js"></script>
+  </body>
+</html>

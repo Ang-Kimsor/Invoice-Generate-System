@@ -25,7 +25,7 @@ const poolConfig = process.env.DATABASE_URL
     database: process.env.PGDATABASE,
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
-    // ssl: shouldUseSsl ? { rejectUnauthorized: false } : false
+    ssl: shouldUseSsl ? { rejectUnauthorized: false } : false
   };
 
 const db = new Pool(poolConfig);

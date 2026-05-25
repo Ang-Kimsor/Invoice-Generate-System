@@ -34,13 +34,6 @@ async function testConnection() {
   try {
     await db.query('SELECT 1');
     console.log('✓ Database connected successfully! (PostgreSQL)');
-    if (process.env.DATABASE_URL) {
-      console.log('✓ Using DATABASE_URL connection');
-    } else {
-      console.log(
-        `✓ Database target: ${poolConfig.host}:${poolConfig.port}/${poolConfig.database}`
-      );
-    }
   } catch (err) {
     const errorDetails =
       err instanceof Error
@@ -48,11 +41,6 @@ async function testConnection() {
         : JSON.stringify(err);
 
     console.error('✗ Database connection failed:\n', errorDetails);
-    if (!process.env.DATABASE_URL) {
-      console.error(
-        `Connection config -> host: ${poolConfig.host}, port: ${poolConfig.port}, database: ${poolConfig.database}, user: ${poolConfig.user}`
-      );
-    }
     process.exit(1);
   }
 }

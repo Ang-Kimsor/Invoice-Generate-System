@@ -1,7 +1,7 @@
 {
-  "name": "thermal-invoice-app",
+  "name": "AFC-Invoice-System",
   "version": "1.0.0",
-  "description": "Invoice application for thermal printer (80mm)",
+  "description": "Invoice Generate System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -2,7 +2,7 @@
 node_modules/
 package-lock.json
 createAdmin.js
-
+invoice_db.sql
 # Environment variables
 .env
 .env.local

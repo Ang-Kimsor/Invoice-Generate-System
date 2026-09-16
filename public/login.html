@@ -16,7 +16,7 @@
       }
 
       body {
-        background: linear-gradient(135deg, #020617 0%, #1e3a8a 100%);
+        background: #1e3a8a;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -122,9 +122,6 @@
         font-size: 2.25rem;
         font-weight: 800;
         letter-spacing: -0.025em;
-        background: linear-gradient(to right, #60a5fa, #a78bfa);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
 
       .login-header p {
@@ -228,13 +225,14 @@
       <form id="login-form">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" required autocomplete="username" />
+          <input type="text" id="username" placeholder="Enter your username" required autocomplete="username" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <input
             type="password"
             id="password"
+            placeholder="Enter your password"
             required
             autocomplete="current-password"
           />

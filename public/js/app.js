@@ -505,7 +505,7 @@ const app = {
 
       if (result.success) {
         this.showMessage(
-          `<i class="fa-solid fa-circle-check"></i> Invoice ${result.invoiceNumber} saved successfully! Ready to print.`,
+          `Invoice ${result.invoiceNumber} saved successfully! Ready to print.`,
           "success",
         );
 

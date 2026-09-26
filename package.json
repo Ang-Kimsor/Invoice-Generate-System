@@ -1,5 +1,5 @@
 {
-  "name": "AFC-Invoice-System",
+  "name": "Invoice-Generate-System",
   "version": "1.0.0",
   "description": "Invoice Generate System",
   "main": "server.js",

@@ -7,7 +7,7 @@ const invoiceRoutes = require('./routes/invoices');
 const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
-const bcrypt = require('bcryptjs');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
